@@ -17,6 +17,7 @@ fn longest(x: &str, y: &str) -> &str {
         y
     }
 }
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
 fn main() {
     let string1 = String::from("abcd");
