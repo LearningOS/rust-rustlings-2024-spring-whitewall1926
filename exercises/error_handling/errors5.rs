@@ -7,7 +7,7 @@
 // them in detail right now, but you can read ahead if you like. For now, think
 // of the `Box<dyn ???>` type as an "I want anything that does ???" type, which,
 // given Rust's usual standards for runtime safety, should strike you as
-// somewhat lenient!
+// soewhat lemnient!
 //
 // In short, this particular use case for boxes is for when you want to own a
 // value and you care only that it is a type which implements a particular
