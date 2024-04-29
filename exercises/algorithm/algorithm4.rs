@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -39,7 +38,7 @@ where
     }
 }
 
-impl<T> BinarySearchTree<T>
+impl<T: std::clone::Clone> BinarySearchTree<T>
 where
     T: Ord,
 {
@@ -50,13 +49,57 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+       
+        if self.search(value.clone()) {
+            return; // 如果值已经存在于树中，则直接返回
+        }
+
+        if let Some(ref mut root) = self.root {
+            // 如果根节点存在，则从根节点开始逐步查找合适的插入位置
+            let mut current = root;
+
+            loop {
+                if value < current.value {
+                    // 如果值小于当前节点的值，则插入到当前节点的左子树中
+                    if let Some(ref mut left) = current.left {
+                        current = left;
+                    } else {
+                        // 如果当前节点的左子树为空，则将新节点插入到当前节点的左子树中
+                        current.left = Some(Box::new(TreeNode::new(value)));
+                        break;
+                    }
+                } else {
+                    // 如果值大于等于当前节点的值，则插入到当前节点的右子树中
+                    if let Some(ref mut right) = current.right {
+                        current = right;
+                    } else {
+                        // 如果当前节点的右子树为空，则将新节点插入到当前节点的右子树中
+                        current.right = Some(Box::new(TreeNode::new(value)));
+                        break;
+                    }
+                }
+            }
+        } else {
+            // 如果根节点不存在，则创建一个新的根节点
+            self.root = Some(Box::new(TreeNode::new(value)));
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        let mut current = self.root.as_ref();
+
+        while let Some(node) = current {
+            if value == node.value {
+                return true; // 如果找到目标值，则返回true
+            } else if value < node.value {
+                current = node.left.as_ref(); // 如果目标值小于当前节点的值，则继续在左子树中搜索
+            } else {
+                current = node.right.as_ref(); // 如果目标值大于当前节点的值，则继续在右子树中搜索
+            }
+        }
+
+        false // 如果未找到目标值，则返回false
     }
 }
 

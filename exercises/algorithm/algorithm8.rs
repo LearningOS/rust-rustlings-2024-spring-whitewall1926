@@ -2,11 +2,10 @@
 	queue
 	This question requires you to use queues to implement the functionality of the stac
 */
-// I AM NOT DONE
 
 #[derive(Debug)]
 pub struct Queue<T> {
-    elements: Vec<T>,
+    elements:  Vec<T>,
 }
 
 impl<T> Queue<T> {
@@ -68,14 +67,31 @@ impl<T> myStack<T> {
     }
     pub fn push(&mut self, elem: T) {
         //TODO
+        self.q1.enqueue(elem);
     }
     pub fn pop(&mut self) -> Result<T, &str> {
         //TODO
-		Err("Stack is empty")
+        if self.q1.is_empty() {
+           return Err("Stack is empty");
+        }
+        while self.q1.size() > 0 {
+            if let Ok(x) = self.q1.dequeue() {
+                self.q2.enqueue(x);
+            }
+        }
+        while  self.q2.size() > 1 {
+            if let Ok(x) = self.q2.dequeue() {
+                self.q1.enqueue(x);
+            }
+        }
+        self.q2.dequeue()
     }
     pub fn is_empty(&self) -> bool {
 		//TODO
-        true
+        if   self.q1.size() == 0 {
+            return true;
+        }
+        return false;
     }
 }
 
