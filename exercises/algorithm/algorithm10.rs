@@ -2,7 +2,6 @@
 	graph
 	This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -31,25 +30,19 @@ impl Graph for UndirectedGraph {
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
 
-        print!("{:?}--\n", edge);
+        // print!("{:?}--\n", edge);
         let (x, y, z) = edge;
 
-        let yz = (y.to_string(), z);
-        let mut s:Vec<(String, i32)> =  Vec::new();
-        s.push(yz);
-        self.adjacency_table.insert(x.to_string(),s);
-
-        //print!("{:?}\n",  yz);
-
+        self.adjacency_table
+        .entry(x.to_string())
+        .or_insert_with(Vec::new)
+        .push((y.to_string(), z));
         
-
-
-        let  xz:(String, i32) = (x.to_string(),z);
-        let mut s2:Vec<(String, i32)> =  Vec::new();
-        s2.push(xz);
-        self.adjacency_table.insert(y.to_string(), s2);
-
-
+        self.adjacency_table
+        .entry(y.to_string())
+        .or_insert_with(Vec::new)
+        .push((x.to_string(), z));
+        
     }
 }
 pub trait Graph {
@@ -72,6 +65,7 @@ pub trait Graph {
         for (from_node, from_node_neighbours) in self.adjacency_table() {
             for (to_node, weight) in from_node_neighbours {
                 edges.push((from_node, to_node, *weight));
+                print!("{:?} s\n", edges[edges.len() - 1]);
             }
         }
         edges

@@ -24,6 +24,6 @@ fn main() {
     //     "rustc-cfg=KEY[="VALUE"]",
     //     timestamp
     // );
-    let your_command = "rustc-cfg=feature=pass";
+    let your_command = "rustc-cfg=pass";
     println!("cargo::{}", your_command);
 }
