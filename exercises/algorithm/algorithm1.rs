@@ -2,11 +2,9 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
-use std::vec::*;
 
 #[derive(Debug)]
 struct Node<T> {
@@ -29,13 +27,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T:std::cmp::PartialOrd +std::clone::Clone> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T:std::cmp::PartialOrd +std::clone::Clone> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,14 +67,52 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(mut list_a:LinkedList<T>,mut list_b:LinkedList<T>) -> Self
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+		let mut  ab: LinkedList<T> = LinkedList::default();
+        let mut i: i32 = 0;
+        let mut j: i32 = 0;
+
+        while i < list_a.length as  i32 && j < list_b.length as i32 {
+            let x = list_a.get(i).cloned();
+            let y = list_b.get(j).cloned();
+            match (x, y) {
+                (Some(x_v), Some(y_v)) => {
+                    if x_v < y_v {
+                        ab.add(x_v);
+                        i += 1;
+                    }
+                    else {
+                        ab.add(y_v);
+                        j += 1;
+                    }
+                }
+                (None, None) => todo!(),
+                (None, Some(_)) => todo!(),
+                (Some(_), None) => todo!(),
+            }
         }
+        while i <= list_a.length as  i32 {
+            let x = list_a.get(i).cloned();
+            match  x {
+                Some(x_v) => {
+                    ab.add(x_v);
+                    i += 1;
+                },
+                _ => {break;}
+            }
+        }
+        while j <= list_b.length as  i32 {
+            let x = list_b.get(j).cloned();
+            match  x {
+                Some(x_v) => {
+                    ab.add(x_v);
+                    j += 1;
+                },
+                _ => {break;}
+            }
+        }
+        ab
 	}
 }
 
